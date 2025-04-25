@@ -204,7 +204,7 @@ export default function RSVPForm({ token }: RSVPFormProps) {
               className="text-center uppercase"
             />
             <p className="text-sm text-muted-foreground text-center italic mt-1">
-              Hay parqueaderos disponibles para visitantes, puedes entrar diectamente por la entrada vehicular
+              Hay parqueaderos disponibles para visitantes, puedes ingresar directamente por la entrada vehicular
             </p>
           </div>
 
