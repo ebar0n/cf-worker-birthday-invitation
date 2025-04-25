@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import RSVPForm from "@/app/components/RSVPForm";
-import BackgroundVideo from "@/app/components/BackgroundVideo";
+import ImageCarousel from "@/app/components/ImageCarousel";
 
 export default async function Home({
   searchParams,
@@ -12,10 +12,10 @@ export default async function Home({
 
   return (
     <div className="relative min-h-screen">
-      {/* Background Video/Image */}
+      {/* Background Images Carousel */}
       <div className="fixed inset-0 z-0">
         <Suspense fallback={<div className="w-full h-full bg-gray-900" />}>
-          <BackgroundVideo />
+          <ImageCarousel />
         </Suspense>
       </div>
 
