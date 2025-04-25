@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     description: "¡Luciano Baron cumple 4 años! Te invitamos a celebrar con nosotros.",
     images: ['/photo.png'],
   },
+  metadataBase: new URL('https://cf-worker-birthday-invitation.ebar0n.workers.dev'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'es-ES': '/es-ES',
+    },
+  },
 };
 
 export default function RootLayout({

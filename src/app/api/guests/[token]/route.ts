@@ -1,34 +1,51 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 interface GuestData {
   name: string;
-  confirmed: boolean;
-  adults: number;
+  attendance: string;
   vehiclePlate?: string;
+  guests?: string;
 }
-
-// This is a mock database. In a real application, you would use a proper database
-const mockGuests = new Map<string, GuestData>([
-  ['token1', { name: 'Juan Pérez', confirmed: false, adults: 1 }],
-  ['token2', { name: 'María García', confirmed: true, adults: 2 }],
-]);
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  const { env } = getCloudflareContext();
 
-  // In a real application, you would query your database here
-  const guest = mockGuests.get(token);
+  // Access the D1 database from the environment
+  // In Cloudflare Workers, env is provided by the runtime
+  const db = env.DB;
 
-  if (!guest) {
+  if (!db) {
     return NextResponse.json(
-      { error: 'Guest not found' },
-      { status: 404 }
+      { error: 'Database connection not available' },
+      { status: 500 }
     );
   }
 
-  return NextResponse.json(guest);
+  try {
+    // Query the database for the guest with the provided token
+    const guest = await db.prepare(
+      "SELECT name, attendance, vehiclePlate, guests FROM invitation WHERE token = ?"
+    ).bind(token).first() as GuestData;
+
+    if (!guest) {
+      return NextResponse.json(
+        { error: 'Guest not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(guest);
+  } catch (error) {
+    console.error('Database error:', error);
+    return NextResponse.json(
+      { error: 'Error fetching guest data' },
+      { status: 500 }
+    );
+  }
 }

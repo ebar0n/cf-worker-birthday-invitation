@@ -15,7 +15,9 @@ Esta es una aplicación web para gestionar invitaciones de cumpleaños, construi
 1. Clona el repositorio
 2. Instala las dependencias:
    ```bash
-   npm install
+   nvm use
+   yarn install
+   make env
    ```
 3. Agrega tus archivos de medios:
    - Coloca tu video de fondo en `public/background.mp4`
@@ -32,7 +34,9 @@ Esta es una aplicación web para gestionar invitaciones de cumpleaños, construi
 Para ejecutar la aplicación en modo desarrollo:
 
 ```bash
-npm run dev
+yarn dev
+
+yarn preview
 ```
 
 ## Despliegue
@@ -40,7 +44,7 @@ npm run dev
 La aplicación está configurada para desplegar en Cloudflare Workers. Para desplegar:
 
 ```bash
-npm run deploy
+yarn deploy
 ```
 
 ## Uso
@@ -62,6 +66,29 @@ Actualmente la aplicación usa una base de datos en memoria para demostración. 
 1. Configurar una base de datos real (por ejemplo, Cloudflare D1)
 2. Actualizar los endpoints en `src/app/api/` para usar la base de datos
 3. Implementar un sistema de autenticación seguro para los tokens
+
+## Base de datos en Cloudflare D1
+
+La aplicación utiliza Cloudflare D1 como base de datos SQL serverless. Para configurar y gestionar la base de datos:
+
+1. Crea una base de datos D1 en tu cuenta de Cloudflare:
+   ```bash
+   npx wrangler d1 create birthday-invitations
+   ```
+
+2. Actualiza tu archivo `wrangler.toml` con la información de la base de datos.
+
+3. Inicializa el esquema de la base de datos:
+   ```bash
+   npx wrangler d1 execute birthday-invitations --file=./schema.sql
+   ```
+
+4. Para consultar datos localmente durante el desarrollo:
+   ```bash
+   npx wrangler d1 execute birthday-invitations --local --command="SELECT * FROM invitation"
+   ```
+
+La aplicación interactúa con D1 a través de los endpoints API en `src/app/api/guests/`.
 
 ## Licencia
 

@@ -1459,7 +1459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:^4.20250423.0":
+"@cloudflare/workers-types@npm:^4.20250425.0":
   version: 4.20250425.0
   resolution: "@cloudflare/workers-types@npm:4.20250425.0"
   checksum: 8e51def24c44636866416a0142efd1460a93aecd5caa027862d0f60db415429b5a842ea70062bdcaa814f8795434f5b92eb502dfcdff1bb9fa8fff8cc4b761c5
@@ -4929,7 +4929,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cf-worker-birthday-invitation@workspace:."
   dependencies:
-    "@cloudflare/workers-types": ^4.20250423.0
+    "@cloudflare/workers-types": ^4.20250425.0
     "@eslint/eslintrc": ^3
     "@hookform/resolvers": ^5.0.1
     "@opennextjs/cloudflare": ~1.0.0-beta.0 || ^1.0.0

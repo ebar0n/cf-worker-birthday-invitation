@@ -1,50 +1,51 @@
 import { NextResponse } from 'next/server';
-
-interface GuestData {
-  name: string;
-  confirmed: boolean;
-  adults: number;
-  vehiclePlate?: string;
-}
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 interface RSVPData {
   token: string;
   name: string;
-  confirmed: boolean;
-  adults: number;
+  attendance: string;
   vehiclePlate?: string;
+  guests?: string;
 }
-
-// This is a mock database. In a real application, you would use a proper database
-const mockGuests = new Map<string, GuestData>([
-  ['token1', { name: 'Juan Pérez', confirmed: false, adults: 1 }],
-  ['token2', { name: 'María García', confirmed: true, adults: 2 }],
-]);
 
 export async function POST(request: Request) {
   try {
     const data: RSVPData = await request.json();
-    const { token, name, confirmed, adults, vehiclePlate } = data;
+    const { token, name, attendance, vehiclePlate, guests } = data;
 
-    // In a real application, you would update your database here
-    const guest = mockGuests.get(token);
+    // Get Cloudflare context to access the database
+    const { env } = getCloudflareContext();
+    const db = env.DB;
 
-    if (!guest) {
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection not available' },
+        { status: 500 }
+      );
+    }
+
+    // Check if the guest exists
+    const existingGuest = await db.prepare(
+      "SELECT EXISTS(SELECT 1 FROM invitation WHERE token = ?)"
+    ).bind(token).first();
+
+    if (!existingGuest) {
       return NextResponse.json(
         { error: 'Guest not found' },
         { status: 404 }
       );
     }
 
-    // Update guest information
-    mockGuests.set(token, {
-      name,
-      confirmed,
-      adults,
-      vehiclePlate,
-    });
+    // Update guest information in the database
+    await db.prepare(
+      "UPDATE invitation SET name = ?, attendance = ?, vehiclePlate = ?, guests = ?, updated_at = CURRENT_TIMESTAMP WHERE token = ?"
+    ).bind(name, attendance, vehiclePlate || null, guests || null, token).run();
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: 'RSVP updated successfully'
+    });
   } catch (error) {
     console.error('Error processing RSVP:', error);
     return NextResponse.json(
