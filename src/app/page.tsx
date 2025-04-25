@@ -31,10 +31,10 @@ export default async function Home({
             Soy Luciano Baron
           </h1>
           <h1 className="text-3xl md:text-6xl font-bold text-center mb-3 md:mb-6">
-            ¡Voy a cumplir 4 añitos!
+            ¡Y voy a cumplir 4 añitos!
           </h1>
           <h2 className="text-xl md:text-3xl text-center mb-4 md:mb-8">
-            y te invito a mi fiesta
+            ven a mi fiesta
           </h2>
 
           <div className="space-y-4 md:space-y-6 text-center">
