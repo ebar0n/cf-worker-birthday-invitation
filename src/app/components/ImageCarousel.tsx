@@ -3,8 +3,13 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
+interface MediaFile {
+  type: 'image' | 'video';
+  src: string;
+}
+
 // Static array of media files based on actual files in photos directory
-const mediaFiles = [
+const mediaFiles: MediaFile[] = [
   // Videos
   { type: 'video', src: '/photos/008.mp4' },
   { type: 'video', src: '/photos/010.mp4' },
@@ -150,7 +155,7 @@ const mediaFiles = [
 ];
 
 // Shuffle array function with no consecutive repeats
-const shuffleArray = (array: any[]) => {
+const shuffleArray = (array: MediaFile[]) => {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -160,7 +165,7 @@ const shuffleArray = (array: any[]) => {
 };
 
 // Ensure no consecutive repeats
-const ensureNoRepeats = (array: any[]) => {
+const ensureNoRepeats = (array: MediaFile[]) => {
   for (let i = 1; i < array.length; i++) {
     if (array[i].src === array[i - 1].src) {
       // Find a different image to swap with
@@ -177,7 +182,7 @@ const ensureNoRepeats = (array: any[]) => {
 
 export default function ImageCarousel() {
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-  const [shuffledMedia, setShuffledMedia] = useState<any[]>([]);
+  const [shuffledMedia, setShuffledMedia] = useState<MediaFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 

@@ -1,158 +1,140 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { Textarea } from './ui/textarea';
+import { toast } from 'sonner';
 
-interface GuestInfo {
-  name: string;
-  confirmed: boolean;
-  adults: number;
-  vehiclePlate?: string;
+// Define the form schema with Zod
+const formSchema = z.object({
+  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  email: z.string().email('Email inválido'),
+  attendance: z.enum(['yes', 'no']),
+  guests: z.string().optional(),
+  message: z.string().optional(),
+});
+
+// Infer the type from the schema
+type FormData = z.infer<typeof formSchema>;
+
+interface RSVPFormProps {
+  token?: string;
 }
 
-export default function RSVPForm({ token }: { token?: string }) {
-  const [guestName, setGuestName] = useState<string>('');
-  const [formData, setFormData] = useState<GuestInfo>({
-    name: '',
-    confirmed: false,
-    adults: 1,
-    vehiclePlate: '',
+export default function RSVPForm({ token }: RSVPFormProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      attendance: 'yes',
+    },
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (token) {
-      fetchGuestInfo(token);
-    }
-  }, [token]);
-
-  const fetchGuestInfo = async (token: string) => {
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
     try {
-      setIsLoading(true);
-      setError(null);
+      const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...data, token }),
+      });
 
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Datos mock para demostración
-      const mockData = {
-        'token1': { name: 'Juan Pérez', confirmed: false, adults: 1 },
-        'token2': { name: 'María García', confirmed: true, adults: 2 },
-      };
-
-      const guestData = mockData[token as keyof typeof mockData];
-
-      if (guestData) {
-        console.log('guestName', guestName);
-        setGuestName(guestData.name);
-        setFormData(prev => ({ ...prev, name: guestData.name }));
-      } else {
-        setError('Invitación no válida. Por favor, verifica el enlace.');
+      if (!response.ok) {
+        throw new Error('Error al enviar el formulario');
       }
-    } catch (error) {
-      console.error('Error fetching guest info:', error);
-      setError('Error al cargar la información del invitado. Por favor, intenta nuevamente.');
+
+      toast.success('¡Gracias por tu respuesta!');
+      reset();
+    } catch {
+      toast.error('Hubo un error al enviar tu respuesta. Por favor intenta de nuevo.');
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Simular respuesta exitosa
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error('Error submitting RSVP:', error);
-      setError('Error al enviar la confirmación. Por favor, intenta nuevamente.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="text-center p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
-        <p className="mt-2 text-gray-300">Cargando información...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center p-4 bg-red-500/20 rounded-lg">
-        <h3 className="text-xl font-semibold text-red-300">Error</h3>
-        <p className="text-red-200">{error}</p>
-      </div>
-    );
-  }
-
-  if (isSubmitted) {
-    return (
-      <div className="text-center p-4 bg-green-500/20 rounded-lg">
-        <h3 className="text-xl font-semibold text-green-300">¡Gracias por confirmar!</h3>
-        <p className="text-green-200">Nos vemos pronto.</p>
-      </div>
-    );
-  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Nombre del Invitado
-        </label>
-        <input
-          type="text"
-          value={formData.name}
-          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-          className="w-full px-3 py-2 bg-white/10 rounded-md text-white"
-          required
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="name">Nombre</Label>
+        <Input
+          id="name"
+          {...register('name')}
+          placeholder="Tu nombre completo"
         />
+        {errors.name && (
+          <p className="text-sm text-red-500">{errors.name.message}</p>
+        )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Número de Adultos
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          {...register('email')}
+          placeholder="tu@email.com"
+        />
+        {errors.email && (
+          <p className="text-sm text-red-500">{errors.email.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label>¿Asistirás?</Label>
+        <RadioGroup defaultValue="yes" className="flex gap-4">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yes" id="yes" {...register('attendance')} />
+            <Label htmlFor="yes">Sí, asistiré</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="no" id="no" {...register('attendance')} />
+            <Label htmlFor="no">No podré asistir</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="guests">Número de invitados adicionales</Label>
+        <Input
+          id="guests"
           type="number"
-          min="1"
-          value={formData.adults}
-          onChange={(e) => setFormData(prev => ({ ...prev, adults: parseInt(e.target.value) }))}
-          className="w-full px-3 py-2 bg-white/10 rounded-md text-white"
-          required
+          min="0"
+          {...register('guests')}
+          placeholder="0"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Placa del Vehículo (opcional)
-        </label>
-        <input
-          type="text"
-          value={formData.vehiclePlate}
-          onChange={(e) => setFormData(prev => ({ ...prev, vehiclePlate: e.target.value }))}
-          className="w-full px-3 py-2 bg-white/10 rounded-md text-white"
-          placeholder="ABC123"
+      <div className="space-y-2">
+        <Label htmlFor="message">Mensaje (opcional)</Label>
+        <Textarea
+          id="message"
+          {...register('message')}
+          placeholder="Escribe un mensaje para los cumpleañeros..."
+          className="min-h-[100px]"
         />
       </div>
 
-      <button
+      <Button
         type="submit"
-        disabled={isLoading}
-        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors disabled:opacity-50"
+        className="w-full"
+        disabled={isSubmitting}
       >
-        {isLoading ? 'Enviando...' : 'Confirmar Asistencia'}
-      </button>
+        {isSubmitting ? 'Enviando...' : 'Enviar RSVP'}
+      </Button>
     </form>
   );
 }
