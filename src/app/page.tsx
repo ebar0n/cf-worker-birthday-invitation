@@ -51,14 +51,24 @@ export default async function Home({
               </div>
             </div>
 
+            <div className="mt-4 md:mt-6 p-3 bg-white/20 rounded-lg">
+              <h3 className="text-lg md:text-xl font-bold text-yellow-300">¡IMPORTANTE!</h3>
+              <p className="text-base md:text-lg">Por favor confirma tu asistencia antes del 1 de Mayo</p>
+            </div>
+
             {hasToken ? (
               <div className="mt-4 md:mt-8">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">Tus datos</h3>
                 <RSVPForm token={token} />
               </div>
             ) : (
               <div className="mt-4 md:mt-8 text-center">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">Confirmación de Asistencia</h3>
                 <p className="text-base md:text-lg text-gray-200">
-                  Para confirmar tu asistencia, por favor usa el enlace que recibiste en tu invitación.
+                  Para confirmar tu asistencia, por favor usa el enlace o código QR que recibiste en tu invitación.
+                </p>
+                <p className="text-sm mt-2 text-yellow-300">
+                  Es muy importante confirmar para reservar tu lugar.
                 </p>
               </div>
             )}

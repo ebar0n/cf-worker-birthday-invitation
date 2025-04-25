@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Fiesta de Cumpleaños de Luciano",
-  description: "¡Luciano Baron cumple 4 años! Te invitamos a celebrar con nosotros.",
+  description: "¡Luciano Baron cumple 4 años! Confirma tu asistencia ingresando a esta URL.",
   openGraph: {
     title: "Fiesta de Cumpleaños de Luciano",
-    description: "¡Luciano Baron cumple 4 años! Te invitamos a celebrar con nosotros.",
+    description: "¡Luciano Baron cumple 4 años! Confirma tu asistencia ingresando a esta URL con tu código de invitación.",
     images: ['/photo.png'],
   },
   metadataBase: new URL('https://cf-worker-birthday-invitation.ebar0n.workers.dev'),

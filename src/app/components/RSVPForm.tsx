@@ -209,11 +209,11 @@ export default function RSVPForm({ token }: RSVPFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="guests">Nombres de los acompañantes</Label>
+            <Label htmlFor="guests">Acompañantes (nombre y edad)</Label>
             <Textarea
               id="guests"
               {...register('guests')}
-              placeholder="Por favor escribe los nombres completos de las personas que vendrán contigo..."
+              placeholder="Por favor escribe los nombres completos y edad de las personas que vendrán contigo..."
               className="min-h-[100px]"
             />
           </div>
