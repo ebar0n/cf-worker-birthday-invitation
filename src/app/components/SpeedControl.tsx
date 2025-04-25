@@ -49,13 +49,14 @@ export default function SpeedControl({
         <label className="text-white text-sm">Velocidad</label>
         <input
           type="range"
-          min="1500"
+          min="2000"
           max="8000"
           step="500"
           value={speed}
           onChange={handleSpeedChange}
           className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-600"
         />
+        <span className="text-white text-sm text-center">{(speed / 1000).toFixed(1)}s</span>
       </div>
 
       <div className="flex justify-between gap-1">

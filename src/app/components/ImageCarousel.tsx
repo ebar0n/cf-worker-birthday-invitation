@@ -204,11 +204,16 @@ export default function ImageCarousel() {
     if (isLoading) return;
 
     const interval = setInterval(() => {
-      setIsTransitioning(true);
+      // Primero preparamos las nuevas imágenes
+      setCurrentMediaIndex((prevIndex) => (prevIndex + 2) % mediaList.length);
+
+      // Pequeño delay para asegurar que las nuevas imágenes estén listas
       setTimeout(() => {
-        setCurrentMediaIndex((prevIndex) => (prevIndex + 2) % mediaList.length);
-        setIsTransitioning(false);
-      }, 500);
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300);
+      }, 50);
     }, speed);
 
     return () => clearInterval(interval);
@@ -228,13 +233,15 @@ export default function ImageCarousel() {
   const nextMedia = mediaList[(currentMediaIndex + 1) % mediaList.length];
 
   const getTransitionClasses = (index: number): string => {
-    const baseClasses = 'relative w-full md:w-1/2 h-1/2 md:h-full transition-all duration-[1500ms] ease-in-out ';
+    const baseClasses = 'relative w-full md:w-1/2 h-1/2 md:h-full transition-all duration-[300ms] ease-in-out ';
 
     switch (transitionType) {
       case 'fade':
         return `${baseClasses} ${isTransitioning ? 'opacity-0' : 'opacity-100'}`;
       case 'slide':
-        return `${baseClasses} ${isTransitioning ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`;
+        return `${baseClasses} ${isTransitioning
+          ? index === 0 ? '-translate-x-full opacity-0' : 'translate-x-full opacity-0'
+          : 'translate-x-0 opacity-100'}`;
       case 'zoom':
         return `${baseClasses} ${isTransitioning ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`;
       case 'flip':
@@ -245,14 +252,12 @@ export default function ImageCarousel() {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden bg-black">
       <div className="flex flex-col md:flex-row w-full h-full">
         {[currentMedia, nextMedia].map((media, index) => (
           <div
             key={`${media.src}-${index}`}
-            className={`relative w-full md:w-1/2 h-1/2 md:h-full transition-all duration-[1500ms] ease-in-out ${
-              isTransitioning ? 'opacity-0' : 'opacity-100'
-            }`}
+            className={getTransitionClasses(index)}
           >
             {media.type === 'image' ? (
               <Image
