@@ -9,6 +9,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Textarea } from './ui/textarea';
+import { Checkbox } from './ui/checkbox';
 import { Toaster, toast } from 'sonner';
 
 // Define the form schema with Zod
@@ -17,6 +18,23 @@ const formSchema = z.object({
   attendance: z.enum(['yes', 'no']),
   vehiclePlate: z.string().optional(),
   guests: z.string().optional(),
+  dataPolicy: z.boolean().optional()
+}).refine((data) => {
+  if (data.attendance === 'no') return true;
+
+  const guestsValid = data.guests && data.guests.length > 0;
+  const dataPolicyValid = data.dataPolicy === true;
+
+  return guestsValid && dataPolicyValid;
+}, {
+  message: "Por favor completa los campos requeridos",
+  path: ['guests']
+}).refine((data) => {
+  if (data.attendance === 'no') return true;
+  return data.dataPolicy === true;
+}, {
+  message: "Por favor acepta la política de datos para continuar",
+  path: ['dataPolicy']
 });
 
 // Infer the type from the schema
@@ -46,12 +64,25 @@ export default function RSVPForm({ token }: RSVPFormProps) {
     formState: { errors },
     reset,
     watch,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       attendance: 'yes',
+      dataPolicy: false,
     },
   });
+
+  // Watch attendance to update form state
+  const attendance = watch('attendance');
+
+  useEffect(() => {
+    // Limpiar campos cuando cambia la asistencia a 'no'
+    if (attendance === 'no') {
+      setValue('guests', '', { shouldValidate: true });
+      setValue('dataPolicy', false, { shouldValidate: true });
+    }
+  }, [attendance, setValue]);
 
   useEffect(() => {
     const fetchGuestData = async () => {
@@ -209,13 +240,36 @@ export default function RSVPForm({ token }: RSVPFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="guests">Acompañantes (nombre y edad)</Label>
+            <Label htmlFor="guests">Acompañantes (nombre, documento, edad y alergias o restricciones alimentarias)</Label>
             <Textarea
               id="guests"
               {...register('guests')}
-              placeholder="Por favor escribe los nombres completos y edad de las personas que vendrán contigo..."
+              placeholder="Por favor escribe todos los datos solicitados..."
               className="min-h-[100px]"
             />
+            {errors.guests && (
+              <p className="text-sm text-red-500">{errors.guests.message}</p>
+            )}
+          </div>
+
+          <div className="flex items-start space-x-2 mt-4">
+            <Checkbox
+              id="dataPolicy"
+              checked={watch('dataPolicy')}
+              onCheckedChange={(checked: boolean | 'indeterminate') => {
+                setValue('dataPolicy', checked === true, {
+                  shouldValidate: true
+                });
+              }}
+            />
+            <div className="grid gap-1.5 leading-none">
+              <Label htmlFor="dataPolicy" className="text-sm font-normal">
+                Acepto que estos datos serán utilizados exclusivamente para gestionar el acceso al evento y no serán compartidos con terceros fuera de la administración del conjunto
+              </Label>
+              {errors.dataPolicy && (
+                <p className="text-sm text-red-500">Este campo es requerido</p>
+              )}
+            </div>
           </div>
 
           <Button
