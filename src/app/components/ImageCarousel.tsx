@@ -238,17 +238,19 @@ export default function ImageCarousel() {
             }`}
           >
             {media.type === 'image' ? (
-              <Image
-                src={media.src}
-                alt={`Slide ${currentMediaIndex + index + 1}`}
-                fill
-                className="object-cover"
-                priority={index === 0}
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={media.src}
+                  alt={`Slide ${currentMediaIndex + index + 1}`}
+                  fill
+                  className="object-cover object-[center_30%]"
+                  priority={index === 0}
+                />
+              </div>
             ) : (
               <video
                 src={media.src}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-[center_30%]"
                 autoPlay
                 muted
                 loop
