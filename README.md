@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Invitación de Cumpleaños
 
-## Getting Started
+Esta es una aplicación web para gestionar invitaciones de cumpleaños, construida con Next.js y desplegada en Cloudflare Workers.
 
-First, run the development server:
+## Características
+
+- Fondo de video/imagen personalizable
+- Sistema de invitaciones basado en tokens
+- Formulario de confirmación de asistencia
+- Registro de número de adultos y placa de vehículo
+- Interfaz responsive y moderna
+
+## Configuración
+
+1. Clona el repositorio
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Agrega tus archivos de medios:
+   - Coloca tu video de fondo en `public/background.mp4`
+   - Coloca tu imagen de fondo en `public/background.jpg`
+
+4. Configura las variables de entorno:
+   ```bash
+   cp .dev.vars.example .dev.vars
+   ```
+   Edita `.dev.vars` con tus configuraciones.
+
+## Desarrollo
+
+Para ejecutar la aplicación en modo desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Despliegue
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La aplicación está configurada para desplegar en Cloudflare Workers. Para desplegar:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run deploy
+```
 
-## Learn More
+## Uso
 
-To learn more about Next.js, take a look at the following resources:
+1. Genera tokens únicos para cada invitado
+2. Comparte la URL de la invitación con el token: `https://tu-dominio.com?token=TOKEN_UNICO`
+3. Los invitados pueden confirmar su asistencia y proporcionar información adicional
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Personalización
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Edita `src/app/page.tsx` para modificar el contenido de la invitación
+- Modifica los estilos en `src/app/globals.css`
+- Actualiza los componentes en `src/app/components/`
 
-## Deploy on Vercel
+## Base de Datos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Actualmente la aplicación usa una base de datos en memoria para demostración. Para producción, deberías:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Configurar una base de datos real (por ejemplo, Cloudflare D1)
+2. Actualizar los endpoints en `src/app/api/` para usar la base de datos
+3. Implementar un sistema de autenticación seguro para los tokens
+
+## Licencia
+
+MIT
