@@ -44,6 +44,7 @@ export default function RSVPForm({ token }: { token?: string }) {
       const guestData = mockData[token as keyof typeof mockData];
 
       if (guestData) {
+        console.log('guestName', guestName);
         setGuestName(guestData.name);
         setFormData(prev => ({ ...prev, name: guestData.name }));
       } else {

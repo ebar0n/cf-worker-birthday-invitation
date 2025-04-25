@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 interface GuestData {
   name: string;
@@ -14,10 +15,10 @@ const mockGuests = new Map<string, GuestData>([
 ]);
 
 export async function GET(
-  request: Request,
-  { params }: { params: { token: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ token: string }> }
 ) {
-  const { token } = params;
+  const { token } = await params;
 
   // In a real application, you would query your database here
   const guest = mockGuests.get(token);

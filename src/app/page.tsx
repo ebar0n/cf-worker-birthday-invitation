@@ -1,14 +1,14 @@
-import Image from "next/image";
 import { Suspense } from "react";
 import RSVPForm from "@/app/components/RSVPForm";
 import BackgroundVideo from "@/app/components/BackgroundVideo";
 
-export default function Home({
+export default async function Home({
   searchParams,
 }: {
-  searchParams: { token?: string };
+  searchParams: Promise<{ token?: string }>;
 }) {
-  const hasToken = !!searchParams.token;
+  const { token } = await searchParams;
+  const hasToken = !!token;
 
   return (
     <div className="relative min-h-screen">
@@ -44,7 +44,7 @@ export default function Home({
 
             {hasToken ? (
               <div className="mt-8">
-                <RSVPForm token={searchParams.token} />
+                <RSVPForm token={token} />
               </div>
             ) : (
               <div className="mt-8 text-center">
