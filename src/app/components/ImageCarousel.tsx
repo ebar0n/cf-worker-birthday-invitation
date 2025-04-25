@@ -229,11 +229,11 @@ export default function ImageCarousel() {
       <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
 
       {/* Media container */}
-      <div className="flex w-full h-full">
+      <div className="flex flex-col md:flex-row w-full h-full">
         {[currentMedia, nextMedia].map((media, index) => (
           <div
             key={`${media.src}-${index}`}
-            className={`relative w-1/2 h-full transition-opacity duration-1000 ${
+            className={`relative w-full md:w-1/2 h-1/2 md:h-full transition-opacity duration-1000 ${
               isTransitioning ? 'opacity-0' : 'opacity-100'
             }`}
           >

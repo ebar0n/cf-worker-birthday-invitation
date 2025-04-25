@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import RSVPForm from "@/app/components/RSVPForm";
 import ImageCarousel from "@/app/components/ImageCarousel";
+import MapButton from "@/app/components/MapButton";
 
 export default async function Home({
   searchParams,
@@ -9,6 +10,10 @@ export default async function Home({
 }) {
   const { token } = await searchParams;
   const hasToken = !!token;
+
+  // Dirección y URL del mapa
+  const address = "Bosque San Ángel Conjunto Residencial";
+  const mapUrl = "https://maps.app.goo.gl/zmRSXPxSXviVxt4N7";
 
   return (
     <div className="relative min-h-screen">
@@ -20,47 +25,39 @@ export default async function Home({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-8 text-white">
-        <main className="max-w-2xl w-full bg-black/50 backdrop-blur-sm rounded-lg p-8">
-          <h1 className="text-4xl md:text-6xl font-bold text-center mb-6">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 text-white">
+        <main className="max-w-2xl w-full bg-black/30 md:bg-black/50 backdrop-blur-[2px] md:backdrop-blur-sm rounded-lg p-4 md:p-8">
+          <h1 className="text-3xl md:text-6xl font-bold text-center mb-3 md:mb-6">
             Soy Luciano Baron
           </h1>
-          <h1 className="text-4xl md:text-6xl font-bold text-center mb-6">
+          <h1 className="text-3xl md:text-6xl font-bold text-center mb-3 md:mb-6">
             ¡Voy a cumplir 4 añitos!
           </h1>
-          <h2 className="text-2xl md:text-3xl text-center mb-8">
+          <h2 className="text-xl md:text-3xl text-center mb-4 md:mb-8">
             y te invito a mi fiesta
           </h2>
 
-          <div className="space-y-6 text-center">
+          <div className="space-y-4 md:space-y-6 text-center">
             <div>
-              <h3 className="text-xl font-semibold">Fecha y Hora</h3>
-              <p className="text-lg">Domingo, 18 de Mayo de 2025</p>
-              <p className="text-lg">3:00 PM - 6:00 PM</p>
+              <h3 className="text-lg md:text-xl font-semibold">Fecha y Hora</h3>
+              <p className="text-base md:text-lg">Domingo, 18 de Mayo de 2025</p>
+              <p className="text-base md:text-lg">3:00 PM - 6:00 PM</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold">Lugar</h3>
-              <div className="mt-4 w-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.906092725975!2d-75.19489962329932!3d4.428592043952858!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38c584fb9d9835%3A0x44f30a8ab0c70d1e!2sBosque%20San%20%C3%81ngel%20Conjunto%20Residencial!5e0!3m2!1ses!2sco!4v1745561258620!5m2!1ses!2sco"
-                  width="100%"
-                  height="300"
-                  style={{border:0}}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade">
-                </iframe>
+              <h3 className="text-lg md:text-xl font-semibold">Lugar</h3>
+              <div className="mt-2 md:mt-4 w-full">
+                <MapButton address={address} mapUrl={mapUrl} />
               </div>
             </div>
 
             {hasToken ? (
-              <div className="mt-8">
+              <div className="mt-4 md:mt-8">
                 <RSVPForm token={token} />
               </div>
             ) : (
-              <div className="mt-8 text-center">
-                <p className="text-lg text-gray-300">
+              <div className="mt-4 md:mt-8 text-center">
+                <p className="text-base md:text-lg text-gray-200">
                   Para confirmar tu asistencia, por favor usa el enlace que recibiste en tu invitación.
                 </p>
               </div>
