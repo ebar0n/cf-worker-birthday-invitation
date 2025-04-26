@@ -185,17 +185,27 @@ export default function RSVPForm({ token }: RSVPFormProps) {
         </div>
       ) : isValidToken && showForm ? (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="name" className="block text-center text-lg mb-2">Invitado</Label>
+          <div className="space-y-4 bg-white/10 rounded-lg p-6 border border-white/20">
+            <Label htmlFor="name" className="block text-center text-xl text-white/80 mb-2">
+              Invitado
+            </Label>
             <Input
               id="name"
               {...register('name')}
-              placeholder="Tu nombre completo"
+              type="hidden"
               readOnly={!!guestData}
-              className={`text-center text-2xl py-8 ${guestData ? "opacity-70 cursor-not-allowed border-0 bg-muted" : ""}`}
+              value={guestData?.name || ''}
             />
+            <h2 className="relative text-center text-6xl py-8 font-['Dancing_Script'] font-bold select-none
+              bg-clip-text text-transparent bg-gradient-to-r from-white/90 via-yellow-200/90 to-white/90
+              after:content-[''] after:block after:w-1/2 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-white/50 after:to-transparent after:mx-auto after:mt-4
+              before:content-[''] before:block before:w-1/2 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent before:mx-auto before:mb-4
+              animate-pulse-slow hover:scale-105 transition-transform duration-500
+              drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+              {guestData?.name || 'Nombre del invitado'}
+            </h2>
             {errors.name && (
-              <p className="text-sm text-red-500 text-center">{errors.name.message}</p>
+              <p className="text-base text-red-400 text-center font-medium">{errors.name.message}</p>
             )}
           </div>
 
