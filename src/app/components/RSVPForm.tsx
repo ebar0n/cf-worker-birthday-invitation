@@ -251,12 +251,15 @@ export default function RSVPForm({ token }: RSVPFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="guests">Información adicional y acompañantes</Label>
-            <p className="text-xs text-muted-foreground">Por favor escribe todos los datos solicitados, alguna alergia o restricción alimentaria, y el nombre de cada acompañante (es necesario para el ingreso al evento).</p>
+            <p className="text-xs text-muted-foreground">Por favor escribe todos los datos solicitados por cada persona que asitirá al evento, alguna alergia o restricción alimentaria (es necesario para el ingreso al evento).</p>
             <Textarea
               id="guests"
               {...register('guests')}
-              placeholder="Por favor escribe todos los datos solicitados..."
+              placeholder={`${guestData?.name || 'Nombre del invitado'}, alergico a al gluten.
+Juan Pérez (Papá), vegetariano.
+Maria García (Mamá), sin restricciones.`}
               className="min-h-[100px]"
+              rows={4}
             />
             {errors.guests && (
               <p className="text-sm text-red-500">{errors.guests.message}</p>
