@@ -56,11 +56,6 @@ export default async function Home({
                 </div>
               </div>
 
-              <div className="mt-4 md:mt-6 p-3 bg-white/20 rounded-lg">
-                <h3 className="text-base md:text-lg font-bold text-yellow-300">¡IMPORTANTE!</h3>
-                <p className="text-sm md:text-base">Por favor confirma tu asistencia antes del 1 de Mayo</p>
-              </div>
-
               {hasToken ? (
                 <div className="mt-4 md:mt-8">
                   <h3 className="text-base md:text-lg font-semibold mb-2">Tus datos</h3>

@@ -30,7 +30,10 @@ export default function ToggleDetailsButton() {
       className="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
     >
       <span className="text-sm md:text-base font-medium">
-        <span id="toggle-text">Mostrar detalles</span>
+        <span id="toggle-text">
+          <h3 className="text-base md:text-lg font-bold text-yellow-300">¡IMPORTANTE!</h3>
+        </span>
+        <p>Por favor confirma tu asistencia antes del 8 de Mayo</p>
       </span>
       <svg
         id="collapse-icon"
