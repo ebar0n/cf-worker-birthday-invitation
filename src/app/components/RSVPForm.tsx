@@ -251,7 +251,7 @@ export default function RSVPForm({ token }: RSVPFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="guests">Información adicional y acompañantes</Label>
-            <p className="text-xs text-muted-foreground">Por favor escribe todos los datos solicitados por cada persona que asitirá al evento, alguna alergia o restricción alimentaria (es necesario para el ingreso al evento).</p>
+            <p className="text-xs text-muted-foreground">Por favor escribe todos los datos solicitados por cada persona que asitirá al evento, alguna alergia o restricción alimentaria (los nombres son necesarios para el ingreso).</p>
             <Textarea
               id="guests"
               {...register('guests')}
