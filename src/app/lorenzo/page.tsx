@@ -209,20 +209,19 @@ export default async function Home({
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 text-white pointer-events-none">
         <main className="max-w-2xl w-full bg-black/30 md:bg-black/50 backdrop-blur-[2px] md:backdrop-blur-sm rounded-lg p-4 md:p-8 pointer-events-auto">
-          <h1 className="text-2xl md:text-5xl font-bold text-center mb-3 md:mb-6">
+          <h1 className="text-2xl md:text-5xl font-bold text-center mb-2 md:mb-6">
             Soy Lorenzo Baron Peña
           </h1>
-          <h1 className="text-2xl md:text-5xl font-bold text-center mb-3 md:mb-6">
+          <h1 className="text-xl md:text-5xl font-bold text-center mb-2 md:mb-6">
             ¡Y voy a cumplir 1 añito!
           </h1>
-          <div className="space-y-4 md:space-y-6 text-center">
-            <div className="flex justify-center items-center mb-2">
+          <div className="space-y-3 md:space-y-6 text-center">
+            <div className="flex justify-center items-center mb-1 md:mb-2">
               <ToggleDetailsButton showConfirmationText={false} />
             </div>
             <div id="invitation-details" className="transition-all duration-300">
-
               <div>
-                <h2 className="text-lg md:text-2xl text-center mb-4 md:mb-8">
+                <h2 className="text-lg md:text-2xl text-center mb-3 md:mb-8">
                   Ven a mi fiesta
                 </h2>
                 <h3 className="text-base md:text-lg font-semibold">Fecha y Hora</h3>

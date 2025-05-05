@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import MapButton from "@/app/components/MapButton";
 
 export default async function Home({
   searchParams,
@@ -30,10 +29,6 @@ export default async function Home({
     );
   }
 
-  // Dirección y URL del mapa
-  const address = "Bosque San Ángel Conjunto Residencial";
-  const mapUrl = "https://maps.app.goo.gl/zmRSXPxSXviVxt4N7";
-
   return (
     <div className="relative min-h-screen">
       {/* Background Images Carousel */}
@@ -52,24 +47,24 @@ export default async function Home({
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-end p-4 md:p-8 text-white pointer-events-none">
-        <main className="max-w-4xl w-full bg-black/30 md:bg-black/50 backdrop-blur-[2px] md:backdrop-blur-sm rounded-lg p-4 md:p-8 pointer-events-auto mb-8">
-          <h1 className="text-3xl md:text-6xl font-bold text-center mb-3 md:mb-6">
+        <main className="max-w-4xl w-full bg-black/30 md:bg-black/50 backdrop-blur-[2px] md:backdrop-blur-sm rounded-lg p-3 md:p-8 pointer-events-auto mb-8 mx-auto md:w-full w-[90%]">
+          <h1 className="text-2xl md:text-6xl font-bold text-center mb-2 md:mb-6">
             Somos la familia Baron Peña
           </h1>
-          <h1 className="text-2xl md:text-5xl font-bold text-center mb-3 md:mb-6">
+          <h1 className="text-xl md:text-5xl font-bold text-center mb-2 md:mb-6">
             ¡Nuestros hijos estan de cumpleaños!
           </h1>
-          <div className="space-y-4 md:space-y-6 text-center">
-            <div className="flex justify-center items-center gap-4 mb-2">
+          <div className="space-y-3 md:space-y-6 text-center">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 mb-1 md:mb-2">
               <a
                 href="/lorenzo"
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-full text-white font-medium transition-colors"
+                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-700 rounded-full text-white font-medium transition-colors text-sm md:text-base"
               >
                 Invitación de Lorenzo
               </a>
               <a
                 href="/luciano"
-                className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-full text-white font-medium transition-colors"
+                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-green-600 hover:bg-green-700 rounded-full text-white font-medium transition-colors text-sm md:text-base"
               >
                 Invitación de Luciano
               </a>
