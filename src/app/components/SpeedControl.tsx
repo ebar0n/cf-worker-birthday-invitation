@@ -59,7 +59,7 @@ export default function SpeedControl({
         <span className="text-white text-sm text-center">{(speed / 1000).toFixed(1)}s</span>
       </div>
 
-      <div className="flex justify-between gap-1">
+      {/* <div className="flex justify-between gap-1">
         {Object.entries(transitionIcons).map(([type, icon]) => (
           <button
             key={type}
@@ -74,7 +74,7 @@ export default function SpeedControl({
             {icon}
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

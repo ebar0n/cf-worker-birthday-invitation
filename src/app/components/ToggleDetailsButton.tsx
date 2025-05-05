@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function ToggleDetailsButton() {
+export default function ToggleDetailsButton({ showConfirmationText = true }: { showConfirmationText?: boolean }) {
   useEffect(() => {
     // Hide details by default when component mounts
     const content = document.getElementById('invitation-details');
@@ -33,7 +33,9 @@ export default function ToggleDetailsButton() {
         <span id="toggle-text">
           <h3 className="text-base md:text-lg font-bold text-yellow-300">¡IMPORTANTE!</h3>
         </span>
-        <p>Por favor confirma tu asistencia antes del 8 de Mayo</p>
+        {showConfirmationText && (
+          <p>Por favor confirma tu asistencia antes del 8 de Mayo</p>
+        )}
       </span>
       <svg
         id="collapse-icon"
