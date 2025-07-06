@@ -62,7 +62,15 @@ export default function BirthdayGallery() {
 
   const nextPhoto = () => setCurrentIndex((prev) => (prev < photos.length - 1 ? prev + 1 : 0));
   const prevPhoto = () => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : photos.length - 1));
-  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      setIsFullscreen(true);
+      setShowOriginal(true); // Automáticamente mostrar original en pantalla completa
+    } else {
+      setIsFullscreen(false);
+      setShowOriginal(false); // Volver a calidad optimizada al salir
+    }
+  };
   const toggleZoom = () => setZoom((z) => !z);
 
   const downloadPhoto = async (filename: string) => {
@@ -92,7 +100,7 @@ export default function BirthdayGallery() {
   const getOriginalUrl = (filename: string) => `/photos/2025/birthday/${filename}`;
 
   return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50' : 'min-h-screen'} bg-gradient-to-br from-purple-900 via-pink-900 to-red-900`}>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
       {/* Header */}
       <div className="bg-black/20 backdrop-blur-sm p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-20">
         <div className="text-center md:text-left">
@@ -114,7 +122,7 @@ export default function BirthdayGallery() {
             onClick={toggleFullscreen}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
           >
-            {isFullscreen ? '🔲 Salir pantalla completa' : '⛶ Pantalla completa'}
+            ⛶ Pantalla completa
           </button>
           <a
             href="/"
@@ -190,18 +198,17 @@ export default function BirthdayGallery() {
           )}
         </div>
 
-        {/* Miniaturas: scroll horizontal en móvil, grid en desktop */}
+        {/* Miniaturas: grid compacto en móvil, grid amplio en desktop */}
         {!isFullscreen && (
           <div
             ref={thumbRowRef}
-            className="mt-4 flex md:grid md:grid-cols-8 lg:grid-cols-10 gap-2 md:gap-3 overflow-x-auto md:overflow-visible pb-2 md:pb-0"
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            className="mt-4 grid grid-cols-4 grid-rows-2 md:grid-cols-8 md:grid-rows-1 lg:grid-cols-10 gap-2 md:gap-3 pb-2 md:pb-0"
           >
             {photos.map((photo, index) => (
               <button
                 key={photo}
                 onClick={() => setCurrentIndex(index)}
-                className={`relative aspect-square rounded-lg overflow-hidden transition-all min-w-[64px] md:min-w-0 ${
+                className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
                   index === currentIndex
                     ? 'ring-4 ring-blue-500 scale-105 active-thumb active-thumb-mobile'
                     : 'hover:scale-105'
@@ -213,7 +220,7 @@ export default function BirthdayGallery() {
                   alt={`Miniatura ${index + 1}`}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 64px, (max-width: 1200px) 12.5vw, 10vw"
+                  sizes="(max-width: 768px) 25vw, (max-width: 1200px) 12.5vw, 10vw"
                   quality={40}
                   loading="lazy"
                   draggable={false}
@@ -228,6 +235,94 @@ export default function BirthdayGallery() {
           <p>💡 Usa las flechas del teclado o desliza para navegar • Haz clic en la imagen para hacer zoom • Haz clic en miniaturas • Presiona &apos;F&apos; para pantalla completa • Descarga las fotos originales</p>
         </div>
       </div>
+
+      {/* Modal de pantalla completa */}
+      {isFullscreen && (
+        <div className="fixed inset-0 bg-black z-50 flex flex-col">
+          {/* Header del modal */}
+          <div className="bg-black/80 backdrop-blur-sm p-4 flex justify-between items-center">
+            <div className="text-white">
+              <h2 className="text-lg font-semibold">Foto {currentIndex + 1} de {photos.length}</h2>
+              <p className="text-sm text-gray-300">Fotos del estudio fotográfico</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => downloadPhoto(photos[currentIndex])}
+                className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+              >
+                📥 Descargar
+              </button>
+              <button
+                onClick={toggleFullscreen}
+                className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
+              >
+                ✕ Cerrar
+              </button>
+            </div>
+          </div>
+
+          {/* Imagen en pantalla completa */}
+          <div
+            className="flex-1 relative bg-black"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            <Image
+              src={showOriginal ? getOriginalUrl(photos[currentIndex]) : getThumbnailUrl(photos[currentIndex])}
+              alt={`Foto ${currentIndex + 1} de ${photos.length}`}
+              fill
+              className="object-contain"
+              priority
+              sizes="100vw"
+              quality={showOriginal ? 100 : 60}
+              draggable={false}
+            />
+
+            {/* Controles de navegación */}
+            <button
+              onClick={prevPhoto}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full transition-colors text-xl"
+              aria-label="Foto anterior"
+            >
+              ←
+            </button>
+            <button
+              onClick={nextPhoto}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full transition-colors text-xl"
+              aria-label="Siguiente foto"
+            >
+              →
+            </button>
+          </div>
+
+          {/* Footer con miniaturas - solo en desktop */}
+          <div className="bg-black/80 backdrop-blur-sm p-4 hidden lg:block">
+            <div className="flex gap-2 justify-center">
+              {photos.map((photo, index) => (
+                <button
+                  key={photo}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`relative aspect-square rounded-lg overflow-hidden transition-all w-12 h-12 ${
+                    index === currentIndex ? 'ring-2 ring-blue-500' : 'opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Image
+                    src={getThumbnailUrl(photo)}
+                    alt={`Miniatura ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="48px"
+                    quality={40}
+                    loading="lazy"
+                    draggable={false}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
