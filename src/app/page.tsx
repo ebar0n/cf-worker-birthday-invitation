@@ -52,21 +52,29 @@ export default async function Home({
             Somos la familia Baron Peña
           </h1>
           <h1 className="text-xl md:text-5xl font-bold text-center mb-2 md:mb-6">
-            ¡Nuestros hijos estan de cumpleaños!
+            ¡Celebramos los cumpleaños de nuestros hijos!
           </h1>
           <div className="space-y-3 md:space-y-6 text-center">
             <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 mb-1 md:mb-2">
               <a
-                href="/lorenzo"
-                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-700 rounded-full text-white font-medium transition-colors text-sm md:text-base"
+                href="/2025/lorenzo"
+                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-gray-400 hover:bg-gray-500 rounded-full text-white font-medium transition-colors text-sm md:text-base line-through opacity-75"
               >
                 Invitación de Lorenzo
               </a>
               <a
-                href="/luciano"
-                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-green-600 hover:bg-green-700 rounded-full text-white font-medium transition-colors text-sm md:text-base"
+                href="/2025/luciano"
+                className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-gray-400 hover:bg-gray-500 rounded-full text-white font-medium transition-colors text-sm md:text-base line-through opacity-75"
               >
                 Invitación de Luciano
+              </a>
+            </div>
+            <div className="mt-4 md:mt-6">
+              <a
+                href="/2025/birthday"
+                className="inline-block px-6 md:px-8 py-3 md:py-4 bg-purple-600 hover:bg-purple-700 rounded-full text-white font-medium transition-colors text-sm md:text-base"
+              >
+                📸 ¡Mira las fotos del estudio fotográfico!
               </a>
             </div>
           </div>

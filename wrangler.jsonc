@@ -6,7 +6,8 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "cf-worker-birthday-invitation",
 	"main": ".open-next/worker.js",
-	"workers_dev": true,
+	"workers_dev": false,
+	"preview_urls": false,
 	"compatibility_date": "2025-03-01",
 	"compatibility_flags": [
 		"nodejs_compat"
